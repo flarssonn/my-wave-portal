@@ -1,8 +1,19 @@
 // To deploy run:
 // npx hardhat run scripts/deploy.js --network localhost
 
+const { hexStripZeros } = require("ethers/lib/utils");
+
 const main = async () => {
-  const [deployer] = await hre.ethers.getSigners();
+  const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
+  const waveContract = await waveContractFactory.deploy({
+    value: hre.ethers.utils.parseEther("0.001"),
+  });
+
+  await waveContract.deployed();
+
+  console.log("WavePortal address: ", waveContract.address);
+  
+  /* const [deployer] = await hre.ethers.getSigners();
   const accountBalance = await deployer.getBalance();
 
   console.log("Deploying contracts with account: ", deployer.address);
@@ -12,7 +23,7 @@ const main = async () => {
   const portal = await Token.deploy();
   await portal.deployed();
 
-  console.log("WavePortal address: ", portal.address);
+  console.log("WavePortal address: ", portal.address); */
 };
 
 const runMain = async () => {
